@@ -7,5 +7,6 @@ from .models import Images
 #     return HttpResponse("Hello World!")
 
 def image_list(request):
+    template = 'gallery/image_list.html'
     images = Images.objects.all()
-    return render(request, 'image_list.html', {'images': images})
+    return render(request, template, {'images': images})
