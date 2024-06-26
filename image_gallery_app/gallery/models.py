@@ -6,7 +6,8 @@ class Images(models.Model):
     # Title of the image
     title = models.CharField(max_length=100)
     # File path to the image in storage
-    file_path = models.CharField(max_length=256)
+    # file_path = models.CharField(max_length=256)
+    image = models.ImageField(upload_to='images/', default='images/default.png')
     # Time image was uploaded to gallery
     upload_time = models.DateTimeField(auto_now_add=True)
 
