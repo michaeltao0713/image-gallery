@@ -10,7 +10,7 @@
             <div>
                 <h2>{{ image.title }}</h2>
                 <p>{{ image.description }}</p>
-                <img src="{{ image.file_path }}" alt="{{ image.title }}">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}">
             </div>
         {% endfor %}
     </div>
