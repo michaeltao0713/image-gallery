@@ -5,12 +5,21 @@ from django.db import models
 class Images(models.Model):
     # Title of the image
     title = models.CharField(max_length=100)
-    # File path to the image in storage
-    # file_path = models.CharField(max_length=256, null=True)
-    image = models.ImageField(upload_to='images/', default='images/default.png')
-    # Time image was uploaded to gallery
-    upload_time = models.DateTimeField(auto_now_add=True)
+    # File Path of the image - Should be unique
+    file_path = models.CharField(max_length=256, null=True)
 
     # Return title of image
     def __str__(self):
         return self.title
+
+
+# Changes Model - Stores changes between target folder and Images table
+class Changes(models.Model):
+    # File Path of the image - Should be unique
+    file_path = models.CharField(max_length=256, null=True)
+    # Type of change/discreptancy between the table and the folder
+    change_type = models.CharField(max_length=50)
+
+    # Returns file path and reason why it was flagged
+    def __str__(self):
+        return f"{self.file_path} - {self.change_type}"

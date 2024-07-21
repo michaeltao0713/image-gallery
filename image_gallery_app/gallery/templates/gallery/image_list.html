@@ -2,15 +2,63 @@
 <html>
 <head>
     <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+        .image-container {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .image-container h2 {
+            font-size: 1.5em;
+            margin: 0.5em 0;
+        }
+        .image-container p {
+            color: #666;
+            font-size: 1em;
+            margin: 0.5em 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Image Gallery</h1>
     <div>
+        <a href="changes/">Click here for changes.</a>
+    </div>
+    <div class="gallery">
         {% for image in images %}
-            <div>
+            <div class="image-container">
                 <h2>{{ image.title }}</h2>
-                <p>{{ image.description }}</p>
-                <img src="{{ image.image.url }}" alt="{{ image.title }}">
+                <a href="{% url 'image_detail' image.id %}">
+                    <img src="{% url 'serve_image' image.file_path %}" alt="{{ image.title }}">
+                </a>
             </div>
         {% endfor %}
     </div>

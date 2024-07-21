@@ -1,8 +1,8 @@
-from django import forms
-from .models import Images
+# from django import forms
+# from .models import Images
 
 
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Images
-        fields = ['title', 'image']
+# # class ImageForm(forms.ModelForm):
+# #     class Meta:
+# #         model = Images
+# #         fields = ['title', 'image']

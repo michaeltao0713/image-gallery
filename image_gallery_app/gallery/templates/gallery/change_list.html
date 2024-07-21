@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Changes List</title>
+</head>
+<body>
+    <h1>Changes List</h1>
+    <ul>
+        {% for change in changes %}
+            <li>
+                {{ change.change_type }} - {{ change.file_path }}
+                <a href="{% url 'handle_change' change.id %}">Handle</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

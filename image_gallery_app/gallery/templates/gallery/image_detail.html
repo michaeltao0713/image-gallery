@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ image.title }}</title>
+</head>
+<body>
+    <h1>{{ image.title }}</h1>
+    <img src="{{ image.file_path }}" alt="{{ image.title }}">
+    <p>{{ image.description }}</p>
+    <p>Uploaded at: {{ image.uploaded_at }}</p>
+    <a href="{% url 'image_list' %}">Back to gallery</a>
+</body>
+</html>
