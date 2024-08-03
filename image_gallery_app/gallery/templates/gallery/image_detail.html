@@ -1,3 +1,7 @@
+{% extends 'gallery/main.html' %}
+{% block content %}
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,9 +9,24 @@
 </head>
 <body>
     <h1>{{ image.title }}</h1>
-    <img src="{{ image.file_path }}" alt="{{ image.title }}">
-    <p>{{ image.description }}</p>
-    <p>Uploaded at: {{ image.uploaded_at }}</p>
+    <img src="{% url 'serve_image' image.file_path %}" alt="{{ image.title }}">
+    <!-- <p>{{ image.description }}</p> -->
+    <!-- <p>Uploaded at: {{ image.uploaded_at }}</p> -->
+    <p>Tag: {% for tag in image.tags.all %}{{ tag.name }} {% endfor %}</p>
+
+    <!-- Form to add tags -->
+    <h2>Add Tag</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Tag</button>
+    </form>
+
+
     <a href="{% url 'image_list' %}">Back to gallery</a>
 </body>
 </html>
+
+
+
+{% endblock content %}

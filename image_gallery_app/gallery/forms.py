@@ -1,8 +1,6 @@
-# from django import forms
-# from .models import Images
+from django import forms
+from .models import Tags
 
 
-# # class ImageForm(forms.ModelForm):
-# #     class Meta:
-# #         model = Images
-# #         fields = ['title', 'image']
+class AddTagForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(queryset=Tags.objects.all(), required=False)

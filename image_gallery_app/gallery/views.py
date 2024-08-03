@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
 from .models import Images, Changes
+from .forms import AddTagForm
 import os
 
 
@@ -20,7 +21,17 @@ def serve_image(request, file_path):
 
 def image_detail(request, image_id):
     image = get_object_or_404(Images, id=image_id)
-    return render(request, 'gallery/image_detail.html', {'image': image})
+
+    if request.method == 'POST':
+        form = AddTagForm(request.POST)
+        if form.is_valid():
+            tags = form.cleaned_data['tags']
+            image.tags.add(*tags)
+            return redirect('image_detail', image_id=image.id)
+    else:
+        form = AddTagForm()
+    return render(request, 'gallery/image_detail.html', {'image': image, 'form': form})
+    # return render(request, 'gallery/image_detail.html', {'image': image})
 
 
 def change_list(request):
