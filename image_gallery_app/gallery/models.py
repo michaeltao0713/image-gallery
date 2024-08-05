@@ -2,7 +2,18 @@ from django.db import models
 
 
 class Tags(models.Model):
+    LOCATION = 'location'
+    TIME = 'time'
+    MISC = 'misc'
+
+    TAG_TYPE_CHOICES = [
+        (LOCATION, 'Location'),
+        (TIME, 'Time'),
+        (MISC, 'Miscellaneous'),
+    ]
+
     name = models.CharField(max_length=100, unique=True)
+    tag_type = models.CharField(max_length=10, choices=TAG_TYPE_CHOICES)
 
     def __str__(self):
         return self.name

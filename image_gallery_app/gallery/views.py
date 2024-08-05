@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
-from .models import Images, Changes
-from .forms import AddTagForm
+from .models import Images, Tags, Changes
+from .forms import AddTagForm, FilterForm
 import os
 
 
 # Returns a list of every element in the Images model.
 def image_list(request):
+    form = FilterForm(request.GET or None)
     images = Images.objects.all()
-    return render(request, 'gallery/image_list.html', {'images': images})
+
+    if form.is_valid() and form.cleaned_data['tag']:
+        tag = form.cleaned_data['tag']
+        images = images.filter(tags=tag)
+    
+    return render(request, 'gallery/image_list.html', {'images': images, 'form': form})
 
 
 def serve_image(request, file_path):
@@ -21,6 +27,9 @@ def serve_image(request, file_path):
 
 def image_detail(request, image_id):
     image = get_object_or_404(Images, id=image_id)
+    location_tags = image.tags.filter(tag_type=Tags.LOCATION)
+    time_tags = image.tags.filter(tag_type=Tags.TIME)
+    misc_tags = image.tags.filter(tag_type=Tags.MISC)
 
     if request.method == 'POST':
         form = AddTagForm(request.POST)
@@ -30,8 +39,14 @@ def image_detail(request, image_id):
             return redirect('image_detail', image_id=image.id)
     else:
         form = AddTagForm()
-    return render(request, 'gallery/image_detail.html', {'image': image, 'form': form})
-    # return render(request, 'gallery/image_detail.html', {'image': image})
+        
+    return render(request, 'gallery/image_detail.html', {
+        'image': image,
+        'location_tags': location_tags,
+        'time_tags': time_tags,
+        'misc_tags': misc_tags,
+        'form': form
+    })
 
 
 def change_list(request):
