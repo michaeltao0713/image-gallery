@@ -1,39 +1,92 @@
-{% extends 'gallery/main.html' %}
-{% block content %}
+<!-- {% extends 'gallery/main.html' %}
+{% block content %} -->
 
 
+<!-- gallery/templates/gallery/image_gallery.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Image Gallery</title>
-
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        .image-list {
+            width: 30%;
+            overflow-y: scroll;
+            height: 100vh;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+        .image-list a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .image-detail {
+            width: 70%;
+            padding: 20px;
+        }
+        .image-detail img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Image Gallery</h1>
-
-    <!-- Filter form -->
-    <form method="get">
-        {{ form.as_p }}
-        <button type="submit">Filter</button>
-    </form>
-
-    <div>
-        <a href="changes/"><p>Click here for changes.</p></a>
-    </div>
-    <div class="gallery">
+    <div class="image-list">
+        <h2>Image List</h2>
         {% for image in images %}
-            <div class="image-container">
-                <!-- <h2>{{ image.title }}</h2> -->
-                <a href="{% url 'image_detail' image.id %}">
-                    <img src="{% url 'serve_image' image.file_path %}" alt="{{ image.title }}">
-                </a>
-            </div>
+            <a href="{% url 'image_detail' image.id %}">{{ image.file_path }}</a>
         {% endfor %}
+    </div>
+
+    <div class="image-detail">
+        {% if selected_image %}
+            <h1>{{ selected_image.title }}</h1>
+            <img src="{% url 'serve_image' selected_image.file_path %}" alt="{{ selected_image.title }}">
+            <p>{{ selected_image.description }}</p>
+            <!-- <p>Uploaded at: {{ selected_image.uploaded_at }}</p> -->
+
+            <!-- Location Tags -->
+            {% if location_tags %}
+                <h2>Location Tags</h2>
+                <ul>
+                    {% for tag in location_tags %}
+                        <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Time Tags -->
+            {% if time_tags %}
+                <h2>Time Tags</h2>
+                <ul>
+                    {% for tag in time_tags %}
+                        <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Miscellaneous Tags -->
+            {% if misc_tags %}
+                <h2>Miscellaneous Tags</h2>
+                <ul>
+                    {% for tag in misc_tags %}
+                        <li>{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% else %}
+            <p>Select an image from the list to see details.</p>
+        {% endif %}
     </div>
 </body>
 </html>
 
 
 
-{% endblock content %}
+<!-- {% endblock content %} -->
 

@@ -6,15 +6,35 @@ import os
 
 
 # Returns a list of every element in the Images model.
-def image_list(request):
-    form = FilterForm(request.GET or None)
+def image_list(request, image_id=None):
     images = Images.objects.all()
+    selected_image = None
+    location_tags, time_tags, misc_tags = None, None, None
 
-    if form.is_valid() and form.cleaned_data['tag']:
-        tag = form.cleaned_data['tag']
-        images = images.filter(tags=tag)
+    if image_id:
+        selected_image = get_object_or_404(Images, id=image_id)
+        location_tags = selected_image.tags.filter(tag_type=Tags.LOCATION)
+        time_tags = selected_image.tags.filter(tag_type=Tags.TIME)
+        misc_tags = selected_image.tags.filter(tag_type=Tags.MISC)
     
-    return render(request, 'gallery/image_list.html', {'images': images, 'form': form})
+    return render(request, 'gallery/image_list.html', {
+        'images': images,
+        'selected_image': selected_image,
+        'location_tags': location_tags,
+        'time_tags': time_tags,
+        'misc_tags': misc_tags,
+    })
+
+
+# def image_list(request):
+#     form = FilterForm(request.GET or None)
+#     images = Images.objects.all()
+
+#     if form.is_valid() and form.cleaned_data['tag']:
+#         tag = form.cleaned_data['tag']
+#         images = images.filter(tags=tag)
+    
+#     return render(request, 'gallery/image_list.html', {'images': images, 'form': form})
 
 
 def serve_image(request, file_path):
